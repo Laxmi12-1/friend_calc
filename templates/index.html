@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendship Calculator ❤️</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body><div class="hearts">
+    <span>❤️</span>
+    <span>💜</span>
+    <span>❤️</span>
+    <span>💖</span>
+    <span>💜</span>
+    <span>❤️</span>
+    <span>💖</span>
+    <span>❤️</span>
+</div>
+
+    <div class="container">
+
+        <div class="calculator-card">
+
+            <h1>❤️ Friendship Calculator ❤️</h1>
+
+            <p class="subtitle">
+                Discover your friendship compatibility
+            </p>
+
+            <form action="/calculate" method="POST">
+
+                <input
+                    type="text"
+                    name="name1"
+                    placeholder="Enter First Name"
+                    required
+                >
+
+                <input
+                    type="text"
+                    name="name2"
+                    placeholder="Enter Second Name"
+                    required
+                >
+
+                <button type="submit">
+                    Calculate Friendship
+                </button>
+
+            </form>
+
+            {% if score %}
+
+                <div class="result-box">
+
+    <div class="circle-wrap">
+
+        <div
+            class="circle"
+            style="--percent: {{ score }};"
+        >
+            <span>{{ score }}%</span>
+        </div>
+
+    </div>
+
+    <p class="friend-names">
+        {{ name1 }} ❤️ {{ name2 }}
+    </p>
+
+    <h3>{{ message }}</h3>
+
+</div>
+
+            {% endif %}
+            {% if history %}
+
+<div class="history-box">
+
+    <h3>📜 Recent Calculations</h3>
+
+    {% for row in history %}
+        <div class="history-item">
+            {{ row[1] }} ❤️ {{ row[2] }}
+            <span>{{ row[3] }}%</span>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endif %}
+        </div>
+
+    </div>
+
+</body>
+</html>
