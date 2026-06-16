@@ -27,28 +27,28 @@
             <p class="subtitle">
                 Discover your friendship compatibility
             </p>
+<form action="/calculate" method="POST">
 
-            <form action="/calculate" method="POST">
+    <input 
+        type="text" 
+        name="name1" 
+        placeholder="Enter your name"
+        required
+    >
 
-                <input
-                    type="text"
-                    name="name1"
-                    placeholder="Enter First Name"
-                    required
-                >
+    <input 
+        type="text" 
+        name="name2" 
+        placeholder="Enter friend's name"
+        required
+    >
 
-                <input
-                    type="text"
-                    name="name2"
-                    placeholder="Enter Second Name"
-                    required
-                >
+    <button type="submit">
+        Calculate
+    </button>
 
-                <button type="submit">
-                    Calculate Friendship
-                </button>
-
-            </form>
+</form>
+           
 
             {% if score %}
 
