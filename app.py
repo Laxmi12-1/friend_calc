@@ -1,17 +1,9 @@
 from flask import Flask, render_template, request
 import sqlite3
+import os
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
-
-app = Flask(__name__)
 
 # Create database and table
 def init_db():
@@ -30,31 +22,17 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 init_db()
 
 
-@app.route('/')
+# Home page (history hidden)
+@app.route("/")
 def home():
-
-    conn = sqlite3.connect("friendship.db")
-    cursor = conn.cursor()
-
-    cursor.execute("""
-        SELECT * FROM history
-        ORDER BY id DESC
-        LIMIT 10
-    """)
-
-    history = cursor.fetchall()
-
-    conn.close()
-
-    return render_template(
-        "index.html",
-        history=history
-    )
+    return render_template("index.html", history=[])
 
 
+# Calculate friendship
 @app.route('/calculate', methods=['POST'])
 def calculate():
 
@@ -72,6 +50,8 @@ def calculate():
     else:
         message = "🤝 Needs More Bonding"
 
+
+    # Save calculation in database
     conn = sqlite3.connect("friendship.db")
     cursor = conn.cursor()
 
@@ -84,28 +64,19 @@ def calculate():
     )
 
     conn.commit()
-
-    cursor.execute("""
-        SELECT * FROM history
-        ORDER BY id DESC
-        LIMIT 10
-    """)
-
-    history = cursor.fetchall()
-
     conn.close()
 
+
+    # Do NOT send old history back
     return render_template(
         "index.html",
         score=score,
         message=message,
         name1=name1,
         name2=name2,
-        history=history
+        history=[]
     )
 
-
-import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
